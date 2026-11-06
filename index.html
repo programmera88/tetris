@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Тетріс</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Unbounded:wght@600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="game">
+    <header class="title">
+      <h1>Тетріс</h1>
+      <button class="ghost-btn" id="pauseBtn" type="button">Пауза</button>
+    </header>
+
+    <section class="panel stats" aria-label="Статистика">
+      <div class="stat"><span class="label">Рахунок</span><span class="value" id="score">0</span></div>
+      <div class="stat"><span class="label">Рівень</span><span class="value" id="level">1</span></div>
+      <div class="stat"><span class="label">Лінії</span><span class="value" id="lines">0</span></div>
+      <div class="stat"><span class="label">Рекорд</span><span class="value" id="best">0</span></div>
+    </section>
+
+    <div class="board-wrap">
+      <canvas id="board" width="300" height="600" aria-label="Ігрове поле"></canvas>
+      <div class="overlay" id="overlay">
+        <h2 id="overlayTitle">Тетріс</h2>
+        <p id="overlayText">Збирайте суцільні лінії, щоб очистити поле.</p>
+        <button class="primary-btn" id="overlayBtn" type="button">Грати</button>
+        <p class="hint">Enter — старт</p>
+      </div>
+    </div>
+
+    <aside class="side">
+      <div class="panel">
+        <span class="label">Утримання</span>
+        <canvas id="hold" width="96" height="72"></canvas>
+      </div>
+      <div class="panel">
+        <span class="label">Далі</span>
+        <canvas id="next" width="96" height="216"></canvas>
+      </div>
+    </aside>
+
+    <section class="panel keys" aria-label="Керування">
+      <span class="label">Керування</span>
+      <dl>
+        <dt>← →</dt><dd>рух</dd>
+        <dt>↑ / X</dt><dd>поворот</dd>
+        <dt>Z</dt><dd>поворот назад</dd>
+        <dt>↓</dt><dd>прискорити</dd>
+        <dt>Пробіл</dt><dd>скинути вниз</dd>
+        <dt>C / Shift</dt><dd>утримати</dd>
+        <dt>P / Esc</dt><dd>пауза</dd>
+      </dl>
+    </section>
+
+    <section class="touch" aria-label="Сенсорне керування">
+      <button type="button" data-act="left" aria-label="Вліво">←</button>
+      <button type="button" data-act="down" aria-label="Вниз">↓</button>
+      <button type="button" data-act="right" aria-label="Вправо">→</button>
+      <button type="button" data-act="rotate" aria-label="Повернути">↻</button>
+      <button type="button" data-act="drop" aria-label="Скинути вниз">⤓</button>
+      <button type="button" data-act="hold" aria-label="Утримати">Hold</button>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

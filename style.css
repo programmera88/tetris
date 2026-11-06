@@ -1,0 +1,214 @@
+/* Розкладка: статистика, поле, бічна панель, підказки; на вузьких екранах — сенсорні кнопки. */
+:root {
+  --bg: #14161a;
+  --panel: #1b1e24;
+  --line: #2a2f38;
+  --fg: #e9e6dd;
+  --dim: #8a909b;
+  --accent: #e0b84a;
+  --accent-ink: #1a1405;
+  --display: "Unbounded", "Arial Black", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+html, body { margin: 0; }
+
+body {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--mono);
+  font-size: 14px;
+  display: grid;
+  place-items: center;
+  padding-block: 20px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.game {
+  display: grid;
+  grid-template-columns: 220px auto 140px;
+  grid-template-areas:
+    "title title title"
+    "keys  board side"
+    "stats board side";
+  grid-template-rows: auto auto 1fr;
+  gap: 16px 20px;
+  align-items: start;
+}
+
+.title { grid-area: title; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+h1 {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 28px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 12px 14px;
+  min-width: 0;
+}
+
+.label {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+.keys { grid-area: keys; }
+.stats { grid-area: stats; display: grid; gap: 12px; }
+.side { grid-area: side; display: grid; gap: 16px; }
+
+.stat { display: grid; gap: 2px; }
+.value {
+  font-size: 26px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--fg);
+}
+#score { color: var(--accent); }
+
+.keys dl {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 6px 14px;
+  margin: 10px 0 0;
+}
+.keys dt { color: var(--fg); font-weight: 600; white-space: nowrap; }
+.keys dd { margin: 0; color: var(--dim); }
+
+.side canvas { display: block; margin-top: 8px; width: 96px; height: auto; }
+.side .panel:first-child canvas { height: 72px; }
+
+.board-wrap {
+  grid-area: board;
+  position: relative;
+  border: 2px solid var(--line);
+  border-radius: 4px;
+  background: #101216;
+  line-height: 0;
+}
+#board {
+  display: block;
+  height: min(78vh, 600px);
+  width: auto;
+  aspect-ratio: 1 / 2;
+  max-width: 100%;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 24px;
+  text-align: center;
+  line-height: 1.5;
+  background: rgba(16, 18, 22, 0.86);
+}
+.overlay[hidden] { display: none; }
+.overlay h2 {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 24px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+.overlay p { margin: 0; color: var(--dim); max-width: 24ch; }
+.overlay .hint { font-size: 12px; letter-spacing: 0.08em; }
+
+.primary-btn {
+  appearance: none;
+  border: 0;
+  border-radius: 4px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font: 600 15px var(--mono);
+  letter-spacing: 0.06em;
+  padding: 12px 28px;
+  cursor: pointer;
+}
+.primary-btn:hover { filter: brightness(1.08); }
+
+.ghost-btn {
+  appearance: none;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--fg);
+  font: 400 13px var(--mono);
+  padding: 8px 14px;
+  cursor: pointer;
+}
+.ghost-btn:hover { border-color: var(--dim); }
+
+button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.touch { grid-area: touch; display: none; }
+
+@media (max-width: 760px) {
+  body { align-items: start; padding-block: 12px; }
+  .game {
+    grid-template-columns: minmax(0, 1fr) 96px;
+    grid-template-areas:
+      "title title"
+      "stats stats"
+      "board side"
+      "touch touch";
+    grid-template-rows: auto auto auto auto;
+    gap: 12px;
+    width: 100%;
+    max-width: 480px;
+  }
+  h1 { font-size: 22px; }
+  .keys { display: none; }
+  .stats { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; padding: 10px; }
+  .value { font-size: 17px; }
+  .label { font-size: 10px; letter-spacing: 0.1em; }
+  .side { gap: 12px; }
+  .side .panel { padding: 10px; }
+  #board { height: auto; width: 100%; }
+  .touch {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+  .touch button {
+    appearance: none;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: var(--panel);
+    color: var(--fg);
+    font: 600 22px var(--mono);
+    padding: 16px 0;
+    touch-action: none;
+    cursor: pointer;
+  }
+  .touch button:active { background: var(--line); }
+}
+
+@media (min-width: 761px) and (max-width: 940px) {
+  .game { grid-template-columns: 180px auto 120px; gap: 14px; }
+}
